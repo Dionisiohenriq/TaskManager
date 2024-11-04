@@ -5,10 +5,9 @@ public class Person : Entity
     public string Name { get; private set; }
     public string Email { get; private set; }
     public DateTime BirthDate { get; private set; }
-    public ICollection<PersonTask> Tasks { get; set; }
-
-
-    public Person(string? name, string? email, DateTime birthDate)
+    
+    private Person() { }
+    public Person(string name, string email, DateTime birthDate)
     {
         SetName(name);
         SetEmail(email);

@@ -1,3 +1,4 @@
+using TaskManager.Application.DTO;
 using TaskManager.Application.Services.Interfaces;
 using TaskManager.Domain.Entities;
 using TaskManager.Domain.Interfaces;
@@ -10,28 +11,72 @@ public class PersonTaskService(IPersonTaskRepository personTaskRepository, Perso
     private readonly IPersonTaskRepository _personTaskRepository = personTaskRepository;
     private readonly PersonService _personService = personService;
 
-    public Task<PersonTask> AddPersonTask(PersonTask person)
+    public Task<PersonTaskDto> AddPersonTask(PersonTaskDto personTaskDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var personTask = personTaskDto.ToEntity(personTaskDto);
+            _personTaskRepository.Add(personTask);
+
+            return Task.FromResult(personTaskDto.FromEntity(personTask));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Task<PersonTask> GetPersonTaskById(Guid id)
+    public Task<PersonTaskDto> GetPersonTaskById(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var personTask = _personTaskRepository.GetById(id).Result;
+
+            var personTaskDto = new PersonTaskDto().FromEntity(personTask);
+
+            return Task.FromResult(personTaskDto);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Task<IEnumerable<PersonTask>> GetAllPersonTasksAsync()
+    public Task<IEnumerable<PersonTaskDto>> GetAllPersonTasksAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var personTasks = _personTaskRepository.GetAllAsync().Result;
+            var personTaskDtos = new PersonTaskDto().FromEntities(personTasks);
+            return Task.FromResult(personTaskDtos);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public PersonTask UpdatePersonTask(PersonTask person)
+    public PersonTaskDto UpdatePersonTask(PersonTaskDto personTaskDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var personTask = _personTaskRepository.GetById(personTaskDto.Id).Result;
+            _personTaskRepository.Update(personTask);
+            return personTaskDto.FromEntity(personTask);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
     public void SoftDeletePersonTask(Guid id)
     {
-        throw new NotImplementedException();
+        var personTaskId = _personTaskRepository.GetById(id).Result.Id;
+        _personTaskRepository.SoftDelete(personTaskId);
     }
 }

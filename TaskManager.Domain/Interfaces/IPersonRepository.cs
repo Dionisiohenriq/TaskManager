@@ -4,5 +4,6 @@ namespace TaskManager.Domain.Interfaces;
 
 public interface IPersonRepository : IRepository<Person>
 {
-    Task<bool> VerifyPersonHasTaskAsync(Guid personId);
+    Task<bool> VerifyPersonExists(string email);
+    Task<Person?> GetPersonByEmail(string email);
 }

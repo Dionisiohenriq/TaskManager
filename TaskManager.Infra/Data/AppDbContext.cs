@@ -11,20 +11,21 @@ public class AppDbContext : DbContext
 
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
-
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Person>().HasKey(p => p.Id);
+        modelBuilder.Entity<Person>().Property(p => p.Id).ValueGeneratedNever();
         modelBuilder.Entity<Person>().Property(p => p.Name).HasMaxLength(100);
         modelBuilder.Entity<Person>().Property(p => p.Email).HasMaxLength(150);
 
         modelBuilder.Entity<PersonTask>().HasKey(p => p.Id);
+        modelBuilder.Entity<PersonTask>().Property(p => p.Id).ValueGeneratedNever();
         modelBuilder.Entity<PersonTask>().Property(p => p.Title).HasMaxLength(150);
         modelBuilder.Entity<PersonTask>().Property(p => p.Description).HasMaxLength(500);
         modelBuilder.Entity<PersonTask>().Property(p => p.Status).HasConversion<string>();
-        modelBuilder.Entity<PersonTask>().HasOne(t => t.Person).WithMany(p => p.Tasks);
+        modelBuilder.Entity<PersonTask>().HasMany<Person>();
         base.OnModelCreating(modelBuilder);
     }
 }

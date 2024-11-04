@@ -1,3 +1,4 @@
+using TaskManager.Application.DTO;
 using TaskManager.Application.Services.Interfaces;
 using TaskManager.Domain.Entities;
 using TaskManager.Domain.Interfaces;
@@ -8,28 +9,85 @@ public class PersonService(IPersonRepository personRepository) : IPersonService
 {
     private readonly IPersonRepository _personRepository = personRepository;
 
-    public Task<Person> AddPersonAsync(Person person)
+    public Task<PersonDto> AddPerson(PersonDto personDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            if (personRepository.VerifyPersonExists(personDto.Email).Result)
+            {
+                var person = personDto.ToEntity(personDto);
+                _personRepository.Add(person);
+
+                return Task.FromResult(personDto.FromEntity(person));
+            }
+
+            return Task.FromResult(new PersonDto());
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Task<Person> GetPersonById(Guid id)
+    public Task<PersonDto> GetPersonById(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var person = _personRepository.GetById(id).Result;
+
+            return Task.FromResult(new PersonDto().FromEntity(person));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Task<IEnumerable<Person>> GetAllPersonsAsync()
+    public async Task<IEnumerable<PersonDto>> GetAllPersonsAsync()
     {
-        throw new NotImplementedException();
+        try
+        {
+            var persons = await _personRepository.GetAllAsync();
+
+            return new PersonDto().FromEntities(persons);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
-    public Person UpdatePerson(Person person)
+    public PersonDto UpdatePerson(PersonDto personDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var person = _personRepository.GetById(personDto.Id.Value).Result;
+
+            _personRepository.Update(personDto.ToEntity(personDto));
+
+            return personDto.FromEntity(person);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 
     public void SoftDelete(Guid id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var person = _personRepository.GetById(id).Result;
+            _personRepository.SoftDelete(person.Id);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
     }
 }

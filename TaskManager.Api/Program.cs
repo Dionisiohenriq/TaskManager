@@ -21,7 +21,7 @@ builder.Services.RegisterServices();
 
 var app = builder.Build();
 
-// Error handling
+// Global error handling
 app.HandleErrors();
 
 // Configure the HTTP request pipeline.
