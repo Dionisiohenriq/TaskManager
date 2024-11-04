@@ -6,8 +6,8 @@
 ->Instale o Docker para sua versão de S.O.
 
 ->Após instalado, rodar o comando dentro da pasta do projeto ( onde estiver o docker-compose.yml )
-  --> docker compose --project-name taskmanager up -d
-  --> a Api irá rodar no endereço: http://localhost:8080/swagger
+  <br/>--> docker compose --project-name taskmanager up -d
+  <br/>--> a Api irá rodar no endereço: http://localhost:8080/swagger
 
 -> A aplicação ainda precisa de ajustes, mas já roda com a API (backend) e banco de dados SQLServer. 
 
