@@ -1,0 +1,34 @@
+﻿services:
+  taskmanager:
+    container_name: taskmanager-api
+    image: taskmanager
+    build:
+      context: .
+      dockerfile: TaskManager.Api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - "ASPNETCORE_ENVIRONMENT=Development"
+    depends_on:
+      - "taskmanager-api-sql"
+    networks:
+      taskmanager-networks:
+  
+  taskmanager-api-sql:
+    image: mcr.microsoft.com/azure-sql-edge
+    environment:
+      - "ACCEPT_EULA=1"
+      - "MSSQL_SA_PASSWORD=strong(!)Password"
+    volumes:
+      - "taskmanager-api-mssql-azure-edge:/var/opt/mssql"
+    networks:
+      taskmanager-networks:
+        aliases:
+          - "sql"
+volumes:
+  taskmanager-api-mssql-azure-edge:
+
+
+networks:
+  taskmanager-networks:
+    driver: bridge

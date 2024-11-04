@@ -8,6 +8,7 @@ public class PersonDto
     public string? Name { get; set; }
     public string? Email { get; set; }
     public DateTime BirthDate { get; set; }
+    public string Password { get; set; }
 
     public PersonDto()
     {
@@ -28,7 +29,7 @@ public class PersonDto
 
     public Person ToEntity(PersonDto personDto)
     {
-        return new Person(personDto.Name, personDto.Email, personDto.BirthDate);
+        return new Person(personDto.Name, personDto.Email, personDto.BirthDate, personDto.Password);
     }
 
     public IEnumerable<PersonDto> FromEntities(IEnumerable<Person> persons)

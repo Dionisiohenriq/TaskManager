@@ -5,13 +5,18 @@ public class Person : Entity
     public string Name { get; private set; }
     public string Email { get; private set; }
     public DateTime BirthDate { get; private set; }
-    
-    private Person() { }
-    public Person(string name, string email, DateTime birthDate)
+    public string Password { get; set; }
+
+    private Person()
+    {
+    }
+
+    public Person(string name, string email, DateTime birthDate, string password)
     {
         SetName(name);
         SetEmail(email);
         SetBirthDate(birthDate);
+        SetPassWord(password);
     }
 
     public void SetName(string? name)
@@ -30,5 +35,11 @@ public class Person : Entity
     {
         if (birthDate == DateTime.MinValue) throw new ArgumentNullException(nameof(birthDate));
         BirthDate = birthDate;
+    }
+
+    public void SetPassWord(string? password)
+    {
+        if (string.IsNullOrEmpty(password)) throw new ArgumentNullException(nameof(password));
+        Password = password;
     }
 }

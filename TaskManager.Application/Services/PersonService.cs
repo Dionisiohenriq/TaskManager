@@ -90,4 +90,31 @@ public class PersonService(IPersonRepository personRepository) : IPersonService
             throw new ApplicationException(e.Message);
         }
     }
+
+    public Task<bool> VerifyPersonExists(string email)
+    {
+        try
+        {
+            return _personRepository.VerifyPersonExists(email);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
+    }
+
+    public Task<PersonDto?> GetPersonByEmail(string email)
+    {
+        try
+        {
+            var person = _personRepository.GetPersonByEmail(email).Result;
+            return Task.FromResult(new PersonDto().FromEntity(person));
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw new ApplicationException(e.Message);
+        }
+    }
 }

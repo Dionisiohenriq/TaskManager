@@ -10,4 +10,6 @@ public interface IPersonService
     Task<IEnumerable<PersonDto>> GetAllPersonsAsync();
     PersonDto UpdatePerson(PersonDto personDto);
     void SoftDelete(Guid id);
+    Task<bool> VerifyPersonExists(string email);
+    Task<PersonDto?> GetPersonByEmail(string email);
 }

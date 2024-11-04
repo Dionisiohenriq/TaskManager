@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.10" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Extensions\ServicesExtension.cs" />
+      <Compile Remove="Extensions\GlobalErrorHandling.cs" />
+      <Compile Remove="Extensions\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Extensions\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Extensions\**" />
+    </ItemGroup>
+
+</Project>

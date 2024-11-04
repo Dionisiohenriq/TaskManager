@@ -11,8 +11,8 @@ public static class RegisterServicesExtension
     public static void RegisterServices(this IServiceCollection services)
     {
         // Services
-        services.AddScoped<IPersonService, PersonService>();
-        services.AddScoped<IPersonTaskService, PersonTaskService>();
+        // services.AddTransient<IPersonService, PersonService>();
+        // services.AddTransient<IPersonTaskService, PersonTaskService>();
 
         // Repos
         services.AddScoped<IPersonRepository, PersonRepository>();

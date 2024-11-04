@@ -9,7 +9,6 @@ public class PersonTaskService(IPersonTaskRepository personTaskRepository, Perso
     : IPersonTaskService
 {
     private readonly IPersonTaskRepository _personTaskRepository = personTaskRepository;
-    private readonly PersonService _personService = personService;
 
     public Task<PersonTaskDto> AddPersonTask(PersonTaskDto personTaskDto)
     {

@@ -1,6 +1,34 @@
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using TaskManager.Domain.Entities;
+
 namespace TaskManager.Api.Extensions;
 
-public class JwtToken
+public static class JwtAuth
 {
-    
+    public static string GenerateJwtToken(this WebApplication app, Person person)
+    {
+        var jwtSettings = app.Configuration.GetSection("JwtSettings");
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["SecretKey"]));
+        var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>
+        {
+            new Claim(JwtRegisteredClaimNames.Sub, person.Email),
+            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+            // Adicione outras claims conforme necessário
+        };
+
+        var tokenOptions = new JwtSecurityToken(
+            issuer: jwtSettings["Issuer"],
+            audience: jwtSettings["Audience"],
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(Convert.ToDouble(jwtSettings["ExpiresInMinutes"])),
+            signingCredentials: signingCredentials
+        );
+
+        return new JwtSecurityTokenHandler().WriteToken(tokenOptions);
+    }
 }
