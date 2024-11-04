@@ -15,3 +15,6 @@
 
 -> A aplicação foi dockerizada para facilitar a execução e visualização da api em funcionamneto.
 
+-> O banco de dados pode ser vizualizado com as credenciais : "host: localhost:1433; user: sa; password: strong(!)Password" - A partir de qualquer SGBD (exemplo: DBeaver, SQLManagementStudio, AzureData, etc.).
+
+
